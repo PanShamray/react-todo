@@ -8,11 +8,11 @@ class TodoList extends Component {
       <div>
         <h2>Тудушка</h2>
         <ul>
-          {todos.map((todo, index) => (
+          {todos.map((todo) => (
             <li
-              key={index}
+              key={todo.id}
               style={{ backgroundColor: todo.isDone ? "green" : "red" }}
-              onClick={() => toggleTodo(index)}
+              onClick={() => toggleTodo(todo.id)}
             >
               {todo.text}
             </li>
@@ -22,5 +22,6 @@ class TodoList extends Component {
     );
   }
 }
+
 
 export default TodoList;

@@ -14,6 +14,7 @@ class App extends Component {
 
   addTodo = (text) => {
     const newTodo = {
+      id: Date.now(), // Генеруємо унікальний id
       text: text,
       isDone: false,
     };
@@ -23,15 +24,20 @@ class App extends Component {
     }));
   };
 
-  toggleTodo = (index) => {
+  toggleTodo = (id) => {
+    // Використовуємо id замість index
     this.setState((prevState) => {
-      const updatedTodos = [...prevState.todos];
-      updatedTodos[index] = {
-        ...updatedTodos[index],
-        isDone: !updatedTodos[index].isDone,
-      };
+      const updatedTodos = prevState.todos.map((todo) => {
+        if (todo.id === id) {
+          return {
+            ...todo,
+            isDone: !todo.isDone,
+          };
+        }
+        return todo;
+      });
 
-      if (updatedTodos[index].isDone) {
+      if (updatedTodos.find((todo) => todo.id === id).isDone) {
         let newIndex = 0;
         while (
           newIndex < updatedTodos.length &&
@@ -39,10 +45,18 @@ class App extends Component {
         ) {
           newIndex++;
         }
-        const toggledTodo = updatedTodos.splice(index, 1)[0];
+        const toggledTodo = updatedTodos.splice(
+          updatedTodos.findIndex((todo) => todo.id === id),
+          1
+        )[0];
         updatedTodos.splice(newIndex, 0, toggledTodo);
       } else {
-        updatedTodos.push(updatedTodos.splice(index, 1)[0]);
+        updatedTodos.push(
+          updatedTodos.splice(
+            updatedTodos.findIndex((todo) => todo.id === id),
+            1
+          )[0]
+        );
       }
 
       return { todos: updatedTodos };
