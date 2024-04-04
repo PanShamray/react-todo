@@ -23,32 +23,10 @@ function App() {
       const updatedTodos = prevTodos.map((todo) =>
         todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
       );
-
-      if (updatedTodos.find((todo) => todo.id === id).isDone) {
-        let newIndex = 0;
-        while (
-          newIndex < updatedTodos.length &&
-          updatedTodos[newIndex].isDone
-        ) {
-          newIndex++;
-        }
-        const toggledTodo = updatedTodos.splice(
-          updatedTodos.findIndex((todo) => todo.id === id),
-          1
-        )[0];
-        updatedTodos.splice(newIndex, 0, toggledTodo);
-      } else {
-        updatedTodos.push(
-          updatedTodos.splice(
-            updatedTodos.findIndex((todo) => todo.id === id),
-            1
-          )[0]
-        );
-      }
-
       return updatedTodos;
     });
   };
+
 
   return (
     <>
