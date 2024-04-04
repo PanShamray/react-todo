@@ -1,41 +1,28 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import "./App.css";
 
-import TodoList from "./components/TodoList/Todolist";
-import TodoForm from "./components/TodoForm/TodoForm";
+import TodoList from "./components/TodoList";
+import TodoForm from "./components/TodoForm";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      todos: [],
-    };
-  }
 
-  addTodo = (text) => {
+function App() {
+  const [todos, setTodos] = useState([]);
+
+  const addTodo = (text) => {
     const newTodo = {
-      id: Date.now(), // Генеруємо унікальний id
+      id: Date.now(),
       text: text,
       isDone: false,
     };
 
-    this.setState((prevState) => ({
-      todos: [...prevState.todos, newTodo],
-    }));
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
   };
 
-  toggleTodo = (id) => {
-    // Використовуємо id замість index
-    this.setState((prevState) => {
-      const updatedTodos = prevState.todos.map((todo) => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            isDone: !todo.isDone,
-          };
-        }
-        return todo;
-      });
+  const toggleTodo = (id) => {
+    setTodos((prevTodos) => {
+      const updatedTodos = prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
+      );
 
       if (updatedTodos.find((todo) => todo.id === id).isDone) {
         let newIndex = 0;
@@ -59,18 +46,16 @@ class App extends Component {
         );
       }
 
-      return { todos: updatedTodos };
+      return updatedTodos;
     });
   };
 
-  render() {
-    return (
-      <>
-        <TodoList todos={this.state.todos} toggleTodo={this.toggleTodo} />
-        <TodoForm addTodo={this.addTodo} />
-      </>
-    );
-  }
+  return (
+    <>
+      <TodoList todos={todos} toggleTodo={toggleTodo} />
+      <TodoForm addTodo={addTodo} />
+    </>
+  );
 }
 
 export default App;

@@ -1,43 +1,30 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-class TodoForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      inputValue: "",
-    };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+function TodoForm({ addTodo }) {
+  const [inputValue, setInputValue] = useState("");
 
-  handleInputChange(event) {
-    this.setState({ inputValue: event.target.value });
-  }
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
 
-  handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (this.state.inputValue.trim() === "") return;
+    if (inputValue.trim() === "") return;
 
-    this.props.addTodo(this.state.inputValue);
-    this.setState({ inputValue: "" });
-  }
+    addTodo(inputValue);
+    setInputValue("");
+  };
 
-  render() {
-    return (
-      <div>
-        <h2>Додати нову тудушку</h2>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            value={this.state.inputValue}
-            onChange={this.handleInputChange}
-          />
-          <button type="submit">Додати</button>
-        </form>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h2>Додати нову тудушку</h2>
+      <form onSubmit={handleSubmit}>
+        <input type="text" value={inputValue} onChange={handleInputChange} />
+        <button type="submit">Додати</button>
+      </form>
+    </div>
+  );
 }
 
 export default TodoForm;
