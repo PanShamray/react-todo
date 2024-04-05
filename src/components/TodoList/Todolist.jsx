@@ -1,15 +1,20 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTodo } from "../../actions/todoActions";
 
-function TodoList({ todos, toggleTodo }) {
+function TodoList() {
+  const todos = useSelector(state => state.todos);
+  const dispatch = useDispatch()
+
   return (
     <div>
       <h2>Тудушка</h2>
       <ul>
-        {todos.map((todo) => (
+        {todos.map(todo => (
           <li
             key={todo.id}
             style={{ backgroundColor: todo.isDone ? "green" : "red" }}
-            onClick={() => toggleTodo(todo.id)}
+            onClick={() => dispatch(toggleTodo(todo.id))}
           >
             {todo.text}
           </li>
